@@ -15,7 +15,7 @@ let package = Package(
 	products: [
 		.library(
 			name: "TunnelModels",
-			targets: ["TunnelModels"]
+			targets: ["LogModels", "TunnelModels"]
 		),
 	],
 	targets: [
