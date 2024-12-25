@@ -11,9 +11,21 @@ public struct LogSummary: Codable, Sendable {
 	public var responseStatus: HTTPStatus
 	/// The response time in milliseconds
 	public var responseTime: Double
+
+	public init(id: Log.ID, host: String, path: String, requestReceived: Date, requestMethod: HTTPMethod, responseSent: Date, responseStatus: HTTPStatus, responseTime: Double) {
+		self.id = id
+		self.host = host
+		self.path = path
+		self.requestReceived = requestReceived
+		self.requestMethod = requestMethod
+		self.responseSent = responseSent
+		self.responseStatus = responseStatus
+		self.responseTime = responseTime
+	}
 }
+
 extension LogSummary {
-	init(log: Log) {
+	public init(log: Log) {
 		id = log.id
 		host = log.request.host
 		path = log.request.path

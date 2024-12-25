@@ -20,4 +20,13 @@ public struct Log: Codable, Sendable {
 	public var request: HTTPRequest
 	public var requestBody: BodyStorage = .included
 	public var response: HTTPResponse
+
+	public init(requestReceived: Date, responseSent: Date, responseTime: Double, request: HTTPRequest, requestBody: BodyStorage = .included, response: HTTPResponse) {
+		self.requestReceived = requestReceived
+		self.responseSent = responseSent
+		self.responseTime = responseTime
+		self.request = request
+		self.requestBody = requestBody
+		self.response = response
+	}
 }
