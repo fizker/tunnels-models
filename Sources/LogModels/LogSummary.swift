@@ -1,7 +1,7 @@
 public import Foundation
 public import TunnelModels
 
-public struct LogSummary: Codable, Sendable {
+public struct LogSummary: Codable, Identifiable, Sendable {
 	public var id: Log.ID
 	public var host: String
 	public var path: String

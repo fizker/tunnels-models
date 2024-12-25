@@ -14,7 +14,7 @@ public struct HTTPStatus: Codable, Sendable {
 	}
 }
 
-public struct HTTPResponse: Codable, Sendable {
+public struct HTTPResponse: Codable, Identifiable, Sendable {
 	public var id: HTTPRequest.ID
 	public var status: HTTPStatus
 	public var headers: HTTPHeaders

@@ -8,7 +8,7 @@ public enum BodyStorage: String, Codable, Sendable {
 	case separate
 }
 
-public struct Log: Codable, Sendable {
+public struct Log: Codable, Identifiable, Sendable {
 	public typealias ID = HTTPRequest.ID
 
 	public var requestReceived: Date

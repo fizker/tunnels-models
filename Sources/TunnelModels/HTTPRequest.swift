@@ -2,7 +2,7 @@ public import Foundation
 
 public typealias HTTPMethod = String
 
-public struct HTTPRequest: Codable, Sendable {
+public struct HTTPRequest: Codable, Identifiable, Sendable {
 	public typealias ID = UUID
 
 	public var id: ID
