@@ -7,10 +7,18 @@ public struct LogSummary: Codable, Identifiable, Sendable {
 	public var path: String
 	public var requestReceived: Date
 	public var requestMethod: HTTPMethod
-	public var responseSent: Date
-	public var responseStatus: HTTPStatus
+	public var responseSent: Date?
+	public var responseStatus: HTTPStatus?
 	/// The response time in milliseconds
-	public var responseTime: Double
+	public var responseTime: Double?
+
+	public init(id: Log.ID, host: String, path: String, requestReceived: Date, requestMethod: HTTPMethod) {
+		self.id = id
+		self.host = host
+		self.path = path
+		self.requestReceived = requestReceived
+		self.requestMethod = requestMethod
+	}
 
 	public init(id: Log.ID, host: String, path: String, requestReceived: Date, requestMethod: HTTPMethod, responseSent: Date, responseStatus: HTTPStatus, responseTime: Double) {
 		self.id = id
@@ -32,7 +40,7 @@ extension LogSummary {
 		requestReceived = log.requestReceived
 		requestMethod = log.request.method
 		responseSent = log.responseSent
-		responseStatus = log.response.status
+		responseStatus = log.response?.status
 		responseTime = log.responseTime
 	}
 }
