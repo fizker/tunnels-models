@@ -12,6 +12,12 @@ let upcomingFeatures: [SwiftSetting] = [
 
 let package = Package(
 	name: "tunnels-models",
+	platforms: [
+		.iOS(.v15),
+		.macOS(.v12),
+		.tvOS(.v15),
+		.watchOS(.v8),
+	],
 	products: [
 		.library(
 			name: "TunnelModels",
