@@ -17,11 +17,7 @@ public struct Log: Codable, Identifiable, Sendable {
 	public var request: HTTPRequest
 	public var requestBody: BodyStorage = .included
 
-	public var responseSent: Date?
-	/// The response time in milliseconds
-	public var responseTime: Double?
-	public var response: HTTPResponse?
-	public var responseBody: BodyStorage = .included
+	public var response: Response?
 
 	public init(request: HTTPRequest, requestReceived: Date = .now) {
 		self.request = request
@@ -29,8 +25,22 @@ public struct Log: Codable, Identifiable, Sendable {
 	}
 
 	public mutating func set(response: HTTPResponse) {
-		self.responseSent = .now
-		self.responseTime = requestReceived.timeIntervalSinceNow * -1000
-		self.response = response
+		self.response = .init(
+			sent: .now,
+			time: requestReceived.timeIntervalSinceNow * -1000,
+			httpResponse: response,
+			body: .included
+		)
+	}
+
+	/// The response-part of a Log.
+	///
+	/// It exists to ensure that either all values are present, or none of the values.
+	public struct Response: Codable, Sendable {
+		public var sent: Date
+		/// The response time in milliseconds
+		public var time: Double
+		public var httpResponse: HTTPResponse
+		public var body: BodyStorage = .included
 	}
 }

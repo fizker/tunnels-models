@@ -7,10 +7,7 @@ public struct LogSummary: Codable, Identifiable, Sendable {
 	public var path: String
 	public var requestReceived: Date
 	public var requestMethod: HTTPMethod
-	public var responseSent: Date?
-	public var responseStatus: HTTPStatus?
-	/// The response time in milliseconds
-	public var responseTime: Double?
+	public var response: Response?
 
 	public init(id: Log.ID, host: String, path: String, requestReceived: Date, requestMethod: HTTPMethod) {
 		self.id = id
@@ -26,9 +23,27 @@ public struct LogSummary: Codable, Identifiable, Sendable {
 		self.path = path
 		self.requestReceived = requestReceived
 		self.requestMethod = requestMethod
-		self.responseSent = responseSent
-		self.responseStatus = responseStatus
-		self.responseTime = responseTime
+		self.response = .init(
+			sent: responseSent,
+			status: responseStatus,
+			time: responseTime
+		)
+	}
+
+	/// The response-part of a Log.
+	///
+	/// It exists to ensure that either all values are present, or none of the values.
+	public struct Response: Codable, Sendable {
+		public var sent: Date
+		public var status: HTTPStatus
+		/// The response time in milliseconds
+		public var time: Double
+
+		public init(sent: Date, status: HTTPStatus, time: Double) {
+			self.sent = sent
+			self.status = status
+			self.time = time
+		}
 	}
 }
 
@@ -39,8 +54,10 @@ extension LogSummary {
 		path = log.request.path
 		requestReceived = log.requestReceived
 		requestMethod = log.request.method
-		responseSent = log.responseSent
-		responseStatus = log.response?.status
-		responseTime = log.responseTime
+		response = log.response.map { .init(
+			sent: $0.sent,
+			status: $0.httpResponse.status,
+			time: $0.time
+		) }
 	}
 }
