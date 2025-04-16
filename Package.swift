@@ -21,12 +21,12 @@ let package = Package(
 	products: [
 		.library(
 			name: "TunnelModels",
-			targets: ["LogModels", "TunnelModels"]
+			targets: ["TunnelLogModels", "TunnelModels"]
 		),
 	],
 	targets: [
 		.target(
-			name: "LogModels",
+			name: "TunnelLogModels",
 			dependencies: [
 				"TunnelModels"
 			],
@@ -42,8 +42,8 @@ let package = Package(
 			swiftSettings: upcomingFeatures
 		),
 		.testTarget(
-			name: "LogModelsTests",
-			dependencies: ["LogModels"],
+			name: "TunnelLogModelsTests",
+			dependencies: ["TunnelLogModels"],
 			swiftSettings: upcomingFeatures
 		),
 	]
