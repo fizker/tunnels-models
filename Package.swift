@@ -1,4 +1,4 @@
-// swift-tools-version: 6.0
+// swift-tools-version: 6.2
 
 import PackageDescription
 
@@ -21,30 +21,30 @@ let package = Package(
 	products: [
 		.library(
 			name: "TunnelModels",
-			targets: ["TunnelLogModels", "TunnelModels"]
+			targets: ["TunnelLogModels", "TunnelModels"],
 		),
 	],
 	targets: [
 		.target(
 			name: "TunnelLogModels",
 			dependencies: [
-				"TunnelModels"
+				"TunnelModels",
 			],
-			swiftSettings: upcomingFeatures
+			swiftSettings: upcomingFeatures,
 		),
 		.target(
 			name: "TunnelModels",
-			swiftSettings: upcomingFeatures
+			swiftSettings: upcomingFeatures,
 		),
 		.testTarget(
 			name: "TunnelModelsTests",
 			dependencies: ["TunnelModels"],
-			swiftSettings: upcomingFeatures
+			swiftSettings: upcomingFeatures,
 		),
 		.testTarget(
 			name: "TunnelLogModelsTests",
 			dependencies: ["TunnelLogModels"],
-			swiftSettings: upcomingFeatures
+			swiftSettings: upcomingFeatures,
 		),
-	]
+	],
 )
