@@ -24,6 +24,9 @@ let package = Package(
 			targets: ["TunnelLogModels", "TunnelModels"],
 		),
 	],
+	dependencies: [
+		.package(url: "https://github.com/fizker/swift-extensions.git", from:"1.4.0"),
+	],
 	targets: [
 		.target(
 			name: "TunnelLogModels",
@@ -34,6 +37,9 @@ let package = Package(
 		),
 		.target(
 			name: "TunnelModels",
+			dependencies: [
+				.product(name: "FzkExtensions", package: "swift-extensions"),
+			],
 			swiftSettings: upcomingFeatures,
 		),
 		.testTarget(
