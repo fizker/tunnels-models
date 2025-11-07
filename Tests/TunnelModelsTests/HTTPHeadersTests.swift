@@ -31,6 +31,7 @@ struct HTTPHeadersTests {
 	@Test(arguments: [
 		("No values", [:], "foo", false),
 		("No matching values", ["bar":["foo"]], "foo", false),
+		("Matching key without values", ["foo":[]], "foo", false),
 		("One matching value, same casing", ["foo": ["bar"]], "foo", true),
 		("One matching value, different casing", ["foo": ["bar"]], "Foo", true),
 		("One matching value, different casing", ["Foo": ["bar"]], "foo", true),
@@ -118,6 +119,21 @@ struct HTTPHeadersTests {
 	}
 
 	@Test
+	func removeValueForName__valueIsLastForKey__keyIsAlsoRemoved() async throws {
+		var headers = HTTPHeaders([ "foo": ["bar", "baz"] ])
+
+		headers.remove(value: "bar", for: "foo")
+		#expect(headers.headers(named: "foo") == ["baz"])
+		#expect(headers.firstHeader(named: "foo") == "baz")
+		#expect(headers.containsHeader(named: "foo") == true)
+
+		headers.remove(value: "baz", for: "foo")
+		#expect(headers.headers(named: "foo") == [])
+		#expect(headers.firstHeader(named: "foo") == nil)
+		#expect(headers.containsHeader(named: "foo") == false)
+	}
+
+	@Test
 	func removeAll__nameMatchesCase__allValuesAreRemoved() async throws {
 		var headers = HTTPHeaders([ "foo": ["bar", "baz"], "111": ["222"]])
 
@@ -135,6 +151,16 @@ struct HTTPHeadersTests {
 
 		let values = headers.headers(named: "foo")
 		#expect(values == [])
+		#expect(headers.firstHeader(named: "foo") == nil)
+		try #expect(encode(headers) == """
+		{
+		  "values" : {
+		    "111" : [
+		      "222"
+		    ]
+		  }
+		}
+		""")
 	}
 
 	@Test
@@ -155,7 +181,7 @@ struct HTTPHeadersTests {
 
 	@Test
 	func encode__multipleHeadersAndValues__encodesAsExpected() async throws {
-		let headers = HTTPHeaders(["foo": ["bar", "baz"], "111": ["222"]])
+		let headers = HTTPHeaders(["foo": ["bar", "baz"], "111": ["222"], "empty": []])
 
 		let expected = """
 		{
@@ -188,7 +214,8 @@ struct HTTPHeadersTests {
 		    ],
 		    "111" : [
 		      "222"
-		    ]
+		    ],
+		    "empty" : []
 		  }
 		}
 		"""

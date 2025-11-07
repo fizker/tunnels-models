@@ -27,7 +27,7 @@ public struct HTTPHeaders: Codable, Sendable, Sequence {
 
 	public init(_ values: [String : [String]] = [:]) {
 		self.values = [:]
-		for (name, values) in values {
+		for (name, values) in values where !values.isEmpty {
 			let header = Header(name: name, values: values)
 			self.values[header.normalizedName] = header
 		}
