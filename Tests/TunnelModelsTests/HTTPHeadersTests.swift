@@ -28,6 +28,22 @@ struct HTTPHeadersTests {
 		#expect("bar" == headers.firstHeader(named: "foo"))
 	}
 
+	@Test(arguments: [
+		("No values", [:], "foo", false),
+		("No matching values", ["bar":["foo"]], "foo", false),
+		("One matching value, same casing", ["foo": ["bar"]], "foo", true),
+		("One matching value, different casing", ["foo": ["bar"]], "Foo", true),
+		("One matching value, different casing", ["Foo": ["bar"]], "foo", true),
+		("Multiple matching values, same casing", ["foo": ["bar", "baz"]], "foo", true),
+		("Multiple matching values, different casing", ["foo": ["bar", "baz"]], "Foo", true),
+		("Multiple matching values, different casing", ["Foo": ["bar", "baz"]], "foo", true),
+	])
+	func containsHeaderNamed(description: String, headers: [String: [String]], nameToSearchFor: String, expected: Bool) async throws {
+		let headers = HTTPHeaders(headers)
+		let actual = headers.containsHeader(named: nameToSearchFor)
+		#expect(actual == expected)
+	}
+
 	@Test
 	func firstHeaderNamed__queryHaveDifferentCasing__allValuesAreReturned() async throws {
 		let headers = HTTPHeaders(["foo": ["bar", "baz"]])

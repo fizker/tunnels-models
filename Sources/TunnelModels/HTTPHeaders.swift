@@ -60,6 +60,10 @@ public struct HTTPHeaders: Codable, Sendable, Sequence {
 		values[Header.normalize(name)] = nil
 	}
 
+	public func containsHeader(named name: String) -> Bool {
+		values[Header.normalize(name)] != nil
+	}
+
 	public func firstHeader(named name: String) -> String? {
 		headers(named: name).first
 	}
