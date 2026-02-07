@@ -5,7 +5,7 @@ import FzkExtensions
 ///
 /// It encapsulates `JSONEncoder` and `JSONDecoder` from `Foundation` and sets up the expected
 /// encoding and decoding strategies.
-public struct Coder {
+public struct Coder: Sendable {
 	let encoder = JSONEncoder() ~ {
 		$0.outputFormatting = [
 			.prettyPrinted,
